@@ -1,0 +1,14 @@
+.cardItem {
+    position: relative;
+    width: 500px;
+    height: 600px;
+    z-index: 2;
+
+    .img {
+        background-image: url('../../assets/images/Notif.png');
+        background-size: cover;
+        background-position: center;
+        width: 100%;
+        height: 100%;
+    }
+}

@@ -1,0 +1,180 @@
+// Variable colors et bg colors
+:root {
+    --text-color-white: #FFFFFF;
+    --text-color-grey: #F5F5F5;
+    --text-color-black-01: #000000;
+    --text-color-black-02: #333333;
+
+    --bg-color-primary: #073C39;
+    --bg-color-white: #FFFFFF;
+    --bg-color-black: #000000;
+    --bg-color-grey: #F5F5F5;
+    --bg-color-grey-01: #E5E5E5;
+
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 2rem 0;
+    z-index: 2;
+
+    .container {
+        max-width: 1170px;
+        width: 80%;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .navTopLeft {
+            width: 170px;
+            height: 40px;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 4px;
+            }
+        }
+
+        .navTopRight {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+
+            .navTopList {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+
+                li {
+                    list-style: none;
+                    
+                    a {
+                        text-decoration: none;
+                        color: var(--text-color-white);
+                        font-size: .85rem;
+                        font-family: 'manrope';
+                        transition: opacity .3s ease-in-out;
+
+                        &:hover {
+                            opacity: .8;
+                        }
+                    }
+                }
+            }
+
+            .account {
+                a {
+                    text-decoration: none;
+
+                    button {
+                        background-color: var(--bg-color-white);
+                        color: var(--text-color-black-01);
+                        border: none;
+                        width: 120px;
+                        height: 40px;
+                        border-radius: 4px;
+                        font-size: .85rem;
+                        font-family: 'manrope';
+                        cursor: pointer;
+
+                        &:hover {
+                            background-color: var(--bg-color-grey);
+                        }
+                    }
+                }
+            }
+        }
+        .MenuMobileToggle {
+            display: none;
+        }
+    }
+}
+
+// Navbar responsive
+
+@media screen and (max-width: 991px) {
+    nav {
+        .container {
+            .navTopLeft {
+                width: 120px;
+                height: 30px;
+            }
+
+            .navTopRight {
+                .navTopList {
+                    position: fixed;
+                    width: 100%;
+                    height: 100vh;
+                    top: 0;
+                    left: 0;
+                    background-color: var(--bg-color-white);
+                    z-index: 2;
+                    flex-direction: column;
+                    justify-content: center;
+
+                    li {
+                        a {
+                            color: var(--text-color-black-02);
+                            font-size: 1.2rem;
+                            font-family: 'poppins';
+                            padding: 1rem 0;
+                            display: block;
+                            text-align: center;
+                            transition: opacity .3s ease-in-out;
+
+                            &:hover {
+                                opacity: .8;
+                            }
+                        }
+                    }
+                }
+
+                .account {
+                    position: absolute;
+                }
+            }
+            .MenuMobileToggle {
+                position: fixed;
+                top: 2rem;
+                right: 2rem;
+                z-index: 3;
+                display: inline-block;
+                cursor: pointer;
+                width: 25px;
+                height: 14px;
+
+                .line {
+                    position: absolute;
+                    height: 2px;
+                    border-radius: 9999px;
+                    background-color: var(--text-color-black-01);
+                }
+
+                .l1 {
+                    width: 80%;
+                    top: 5px;
+                    right: 0;
+                }
+
+                .l2 {
+                    width: 60%;
+                    top: 12px;
+                    right: 0;
+                    transform: translateY(-50%);
+                }
+
+                .l3 {
+                    width: 40%;
+                    top: 17px;
+                    right: 0;
+                }
+            }
+        }
+    }
+}
