@@ -114,3 +114,104 @@ header {
         }
     }
 }
+
+// Responsive Start
+
+@media screen and (max-width: 1200px) {
+    header {
+        .container {
+            max-width: 1170px;
+            width: 80%;
+            margin: 0 auto;
+            height: auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            position: relative;
+
+            .headerLeft {
+                width: 700px;
+                height: 500px;
+
+                h1 {
+                    font-size: 2.5rem;
+                }
+
+                p {
+                    font-size: .8rem;
+                }
+
+                .headerLeftInput {
+                    margin-top: 1rem;
+
+                    input {
+                        height: 35px;
+                        font-size: .8rem;
+                    }
+
+                    button {
+                        height: 35px;
+                        font-size: .8rem;
+                    }
+                }
+            }
+
+            .headerRight {
+                display: none;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    header {
+
+        .vectorBottom {
+            position: absolute;
+            bottom: -150px;
+            right: -50px;
+            transform: rotate(-10deg);
+        }
+        .container {
+            max-width: 991px;
+            width: 80%;
+            margin: 0 auto;
+            height: auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            place-items: center;
+            position: relative;
+
+            .headerLeft {
+                width: 300px;
+                height: 500px;
+                position: relative;
+
+                h1 {
+                    font-size: 1.7rem;
+                }
+
+                p {
+                    font-size: .8rem;
+                }
+
+                .headerLeftInput {
+                    margin-top: 1rem;
+
+                    input {
+                        height: 35px;
+                        font-size: .8rem;
+                    }
+
+                    button {
+                        height: 35px;
+                        font-size: .8rem;
+                    }
+                }
+            }
+
+            .headerRight {
+                display: none;
+            }
+        }
+    }
+}

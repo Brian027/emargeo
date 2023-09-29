@@ -1,0 +1,221 @@
+:root {
+    --background-primary: #fff;
+    --background-active-item: #073c39;
+
+    --color-black-primary: #09090A;
+    --color-black-secondary: #1F1F22;
+}
+
+// Start CSS
+
+.sideNav {
+    .wrapper {
+        background-color: var(--background-primary);
+        height: 590px;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 2rem;
+
+        .headerNav {
+            .userProfile {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+
+                .userImg {
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        border-radius: 50%;
+                    }
+                }
+
+                .userName {
+                    h4 {
+                        font-size: 1rem;
+                        font-weight: bold;
+                        font-family: 'poppins';
+                        color: var(--color-black-primary);
+                    }
+
+                    p {
+                        font-size: 0.8rem;
+                        font-family: 'poppins';
+                        color: var(--color-black-secondary);
+                    }
+                }
+            }
+        }
+
+        .bodyNav {
+            .linkContainer {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+
+                button {
+                    width: 100%;
+                    height: 50px;
+                    padding: 0 .5rem;
+                    border-radius: 8px;
+                    background-color: transparent;
+                    border: none;
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-start;
+                    gap: 1rem;
+                    cursor: pointer;
+
+                    a {
+                        text-decoration: none;
+                    }
+
+                    // Active item
+                    &.active {
+                        background-color: var(--background-active-item);
+                    }
+
+                    i {
+                        font-size: 1.5rem;
+                        color: var(--color-black-secondary);
+
+                        &.active {
+                            color: #fff;
+                        }
+                    }
+
+                    span {
+                        font-size: 1rem;
+                        font-family: 'poppins';
+                        color: var(--color-black-primary);
+
+                        &.active {
+                            color: #fff;
+                        }
+                    }
+                }
+            }
+        }
+
+        .footerNav {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            .logout {
+                button {
+                    width: 100%;
+                    height: 50px;
+                    padding: 0 .5rem;
+                    border-radius: 8px;
+                    background-color: transparent;
+                    border: none;
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-start;
+                    gap: 1rem;
+                    cursor: pointer;
+
+                    i {
+                        font-size: 1.5rem;
+                        color: var(--color-black-secondary);
+                    }
+
+                    span {
+                        font-size: 1rem;
+                        font-family: 'poppins';
+                        color: var(--color-black-primary);
+                    }
+                }
+            }
+
+            .darkMode {
+                display: flex;
+                align-items: center;
+                gap: .5rem;
+
+                button {
+                    width: 100%;
+                    height: 50px;
+                    padding: 0 .5rem;
+                    border-radius: 50%;
+                    background-color: transparent;
+                    border: none;
+                    display: flex;
+                    gap: 1rem;
+                    align-items: center;
+                    cursor: pointer;
+
+                    i {
+                        font-size: 1.5rem;
+                        color: var(--color-black-secondary);
+                    }
+
+                    span {
+                        font-size: .8rem;
+                        font-family: 'poppins';
+                        color: var(--color-black-primary);
+                    }
+                }
+
+                .inputCheck {
+                    label {
+                        position: relative;
+                        display: inline-block;
+                        width: 60px;
+                        height: 30px;
+
+                        input {
+                            position: relative;
+                            z-index: 1;
+                            width: 100%;
+                            height: 100%;
+                            appearance: none;
+                            cursor: pointer;
+
+                            &:checked ~ span {
+                                background-color: rgb(7, 59, 57);
+
+                                i {
+                                    transform: translate(-165%, -50%) rotate(360deg);
+                                }
+                            }
+                        }
+
+                        span {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            background-color: #cecece;
+                            border-radius: 80px;
+                            transition: .5s ease-in-out;
+
+                            i {
+                                position: absolute;
+                                width: 25px;
+                                height: 25px;
+                                top: 50%;
+                                right: -15%;
+                                transform: translate(-50%, -50%);
+                                background-color: var(--background-primary);
+                                font-size: .8rem;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                border-radius: 50%;
+                                transition: .5s ease-in-out;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

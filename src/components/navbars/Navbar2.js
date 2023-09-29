@@ -3,8 +3,7 @@ import './navbar.scss'
 import logo from '../../assets/images/logo-emargeo.png'
 import { Link } from 'react-router-dom'
 
-function DefaultNavbar() {
-
+function Navbar2() {
     // Fonction pour afficher le menu mobile
     const showMenuMobile = () => {
         const menuMobile = document.querySelector('.navTopList')
@@ -12,10 +11,9 @@ function DefaultNavbar() {
         btnMenuMobile.classList.toggle('active')
         menuMobile.classList.toggle('active')
     }
-    
   return (
     <>
-        <nav className='navTop default'>
+        <nav className='navTop two'>
             <div className="container">
                 <div className='navTopLeft'>
                     <img src={logo} alt="logo" />
@@ -54,4 +52,4 @@ function DefaultNavbar() {
   )
 }
 
-export default DefaultNavbar
+export default Navbar2

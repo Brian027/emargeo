@@ -5,10 +5,56 @@
     z-index: 2;
 
     .img {
-        background-image: url('../../assets/images/Notif.png');
-        background-size: cover;
-        background-position: center;
         width: 100%;
         height: 100%;
+    }
+}
+
+// MODULE CARD ITEM
+.moduleCard {
+    width: 360px;
+    height: 80px;
+    background-color: #fef7ff;
+    border-radius: 12px;
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+    cursor: pointer;
+
+    .left {
+        width: 20%;
+        height: 100%;
+        background-color: #f5f5f5;
+        border-radius: 12px 0 0 12px;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    }
+
+    .right {
+        .title {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 0.5rem;
+            height: 100%;
+
+            h3 {
+                font-size: 1rem;
+                font-weight: 600;
+                font-family: 'poppins';
+                color: var(--color-black-primary);
+            }
+
+            p {
+                font-size: 0.8rem;
+                font-weight: 400;
+                font-family: 'poppins';
+                color: var(--color-black-primary);
+            }
+        }
     }
 }

@@ -1,0 +1,55 @@
+.padWrapper {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    h3 {
+        font-size: .9rem;
+        font-family: 'poppins';
+        font-weight: normal;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin: 0;
+        margin-top: 1rem;
+        .pad {
+            width: 350px;
+            height: 150px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all .3s ease-in-out;
+
+            canvas {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+            }
+        }
+
+        .btnContainer {
+            display: flex;
+            gap: .5rem;
+
+            button {
+                width: 100px;
+                height: 30px;
+                border-radius: 8px;
+                border: none;
+                background-color: #f9f9f9;
+                font-family: 'poppins';
+                cursor: pointer;
+                transition: all .3s ease-in-out;
+                &:hover {
+                    background-color: #e9e9e9;
+                }
+            }
+        }
+    }
+}
