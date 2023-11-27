@@ -9,8 +9,21 @@ const db = mysql.createConnection({
 });
 
 db.connect((err) => {
-    if(err) throw err;
+    if (err) {
+        console.error(err);
+        throw err;
+    }
     console.log('Database connected');
 });
 
 module.exports = db;
+
+process.on('SIGTERM', () => {
+    db.end((err) => {
+        if (err) {
+            console.error(err);
+        }
+        console.log('Database disconnected');
+        process.exit();
+    });
+});

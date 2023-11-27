@@ -4,6 +4,7 @@ import logo from '../../assets/images/logo-emargeo.png'
 import { Link } from 'react-router-dom'
 
 function Navbar2() {
+
     // Fonction pour afficher le menu mobile
     const showMenuMobile = () => {
         const menuMobile = document.querySelector('.navTopList')
@@ -30,15 +31,31 @@ function Navbar2() {
                             <Link to='/contact' className='link'>Contact</Link>
                         </li>
                         <li className="navTopListItem">
-                            <Link to='/signUp' className='link'>
-                                <button className="btn">S'inscrire</button>
-                            </Link>
+                            {/* {
+                                user.data.id ? (
+                                    <Link to='/account' className='link'>
+                                        <button>Mon compte</button>
+                                    </Link>
+                                ) : (
+                                    <Link to='/signUp' className='link'>
+                                        <button>S'inscrire</button>
+                                    </Link>
+                                )
+                            } */}
                         </li>
                     </ul>
                     <div className="account">
-                        <Link to='/signUp' className='link'>
-                            <button className="btn">S'inscrire</button>
-                        </Link>
+                        {/* {
+                            user.data.id ? (
+                                <Link to='/account' className='link'>
+                                    <button>Mon compte</button>
+                                </Link>
+                            ) : (
+                                <Link to='/signUp' className='link'>
+                                    <button>S'inscrire</button>
+                                </Link>
+                            )
+                        } */}
                     </div>
                 </div>
                 <div className="MenuMobileToggle" onClick={showMenuMobile}>

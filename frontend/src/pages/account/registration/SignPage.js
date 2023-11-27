@@ -6,6 +6,7 @@ import AppBar from '../../../components/appbars/AppBar'
 import SignPad from '../../../components/pads/SignPad'
 
 function SignPage() {
+
   return (
     <>
       <Navbar2 />

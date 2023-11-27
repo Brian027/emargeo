@@ -22,8 +22,8 @@
 
         .rightContent {
             background-color: var(--background-primary);
-            border-radius: 6px;
             padding: 2rem;
+            border: 3px solid #000;
 
             .headerManage {
                 background-color: var(--background-grey-01);
@@ -41,8 +41,9 @@
             .contentBox {
                 display: flex;
                 gap: 1rem;
-                padding: 1rem;
+                padding: 1rem 0;
                 width: 100%;
+                justify-content: space-between;
 
                 .selectChoice {
                     display: none;
@@ -52,17 +53,20 @@
                     display: flex;
                     gap: 1rem;
                     border-bottom: 2px solid #ccc;
-                    width: 100%;
+                    width: 70%;
                     position: relative;
 
-                    a {
+                    button {
                         text-decoration: none;
                         color: var(--color-black-primary);
                         font-family: 'poppins';
                         font-size: 1rem;
                         font-weight: 600;
-                        padding: 1rem;
+                        padding: .5rem 1rem;
                         transition: all 0.3s ease-in-out;
+                        background-color: transparent;
+                        border: none;
+                        cursor: pointer;
 
                         &:hover {
                             background-color: var(--background-grey-01);
@@ -82,8 +86,46 @@
                             background-color: var(--background-active-item);
                             color: var(--background-primary);
                             &::before {
-                                width: 15%;
+                                width: 20%;
                             }
+                        }
+                    }
+
+                }
+                .addGroupe {
+                    display: flex;
+                    align-items: center;
+                    
+                    input {
+                        padding: .6rem 1rem;
+                        border-top-left-radius: 4px;
+                        border-bottom-left-radius: 4px;
+                        border: 1px solid #ccc;
+                        font-family: 'poppins';
+                        font-size: .8rem;
+                        font-weight: 600;
+                        color: var(--color-black-primary);
+                        outline: none;
+                        cursor: pointer;
+                    }
+
+                    button {
+                        padding: .5rem 1rem;
+                        border-top-right-radius: 4px;
+                        border-bottom-right-radius: 4px;
+                        border: 1px solid #ccc;
+                        font-family: 'poppins';
+                        font-size: 1rem;
+                        font-weight: 600;
+                        color: var(--color-black-primary);
+                        outline: none;
+                        cursor: pointer;
+                        background-color: var(--background-active-item);
+                        color: var(--background-primary);
+                        transition: opacity .15s ease-in-out;
+
+                        &:hover {
+                            opacity: .95;
                         }
                     }
                 }

@@ -4,6 +4,7 @@
     --background-grey-01: #f8f9fd;
     --background-grey-02: #b9b9b9;
     --background-black-01: #1F1F22;
+    --background-error-red: #fb1111;
 
     --color-black-primary: #09090A;
     --color-black-secondary: #1F1F22;
@@ -306,6 +307,22 @@
                         a {
                             color: var(--color-black-secondary);
                         }
+                    }
+                }
+                .error {
+                    visibility: hidden;
+                    opacity: 0;
+                    width: 400px;
+                    background-color: var(--background-error-red);
+                    padding: 1rem;
+                    border-radius: 6px;
+                    transition: opacity .7s cubic-bezier(0.19, 1, 0.22, 1);
+                    p {
+                        font-size: .7rem;
+                        font-family: 'manrope';
+                        font-weight: 600;
+                        color: var(--color-white-primary);
+                        letter-spacing: .05rem;
                     }
                 }
             }

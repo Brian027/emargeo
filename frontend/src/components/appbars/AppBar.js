@@ -10,9 +10,10 @@ function AppBar() {
         menuToggle.classList.toggle('active')
         navigation.classList.toggle('active')
     }
+
     return (
         <div className='appBar'>
-            <div className="container">
+            <div className="containerAppBar">
                 <ul className="linkNav">
                     <li className="link dashboard">
                         <Link to='/dashboard'>
@@ -20,18 +21,33 @@ function AppBar() {
                             <span>Tableau de bord</span>
                         </Link>
                     </li>
-                    <li className="link management">
-                        <Link to='/groupeManagement'>
-                            <i className='bx bx-group'></i>
-                            <span>Gestion de groupes</span>
-                        </Link>
-                    </li>
-                    <li className="link emargement">
-                        <Link to='/registration'>
-                            <i className='bx bx-calendar'></i>
-                            <span>Emargement</span>
-                        </Link>
-                    </li>
+                    {/* {
+                        user.data.role === 'Formateur' && (
+                            <li className="link management">
+                                <Link to='/manageGroupe'>
+                                    <i className='bx bx-group'></i>
+                                    <span>Gestion de groupes</span>
+                                </Link>
+                            </li>
+                        )
+                    }
+                    {
+                        user.data.role === 'Formateur' ? (
+                            <li className='link session'>
+                                <Link to='/manageSession'>
+                                    <i className='bx bx-calendar'></i>
+                                    <span>Sessions d'emargement</span>
+                                </Link>
+                            </li>
+                        ) : (
+                            <li className='link emargement'>
+                                <Link to='/emargement'>
+                                    <i className='bx bx-calendar'></i>
+                                    <span>Emargement</span>
+                                </Link>
+                            </li>
+                        )
+                    } */}
                     <li className="link account">
                         <Link to='/account'>
                             <i className='bx bx-cog'></i>
