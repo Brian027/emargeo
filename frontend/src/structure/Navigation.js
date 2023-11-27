@@ -12,8 +12,8 @@ export const nav = [
     {path: '/signUp', name: "Inscription",  element: <SignUp />, isAuth: false},
     {path: '/signIn', name: "Connexion", element: <SignIn />, isAuth: false},
     {path: '/account', name: "Mon compte", element: <MyAccount />, isAuth: true},
-    {path: '/manageGroupe', name: "Gestion de groupe", element: <ManageGroupe />, isAuth: true, requiredRole: 'formateur'},
-    {path: '/session', name: "Session d'émargement", element: <Session />, isAuth: true, requiredRole: 'formateur'},
+    {path: '/manageGroupe', name: "Gestion de groupe", element: <ManageGroupe />, isAuth: true, requiredRole: 'Formateur'},
+    {path: '/session', name: "Session d'émargement", element: <Session />, isAuth: true, requiredRole: 'Formateur'},
     {path: '/emargement', name: "Emargement", element: <Registration />, isAuth: true},
     {path: '/emargement/sign', name: "Signature de l'émargement", element: <SignPage />, isAuth: true}
 ]

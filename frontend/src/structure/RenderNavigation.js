@@ -1,26 +1,25 @@
-import React from 'react'
-import { Route, Routes, Navigate } from 'react-router-dom';
+// RenderNavigation.js
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
 import { nav } from './Navigation';
+import { AuthMiddleware } from '../config/Middleware';
 
 export const RenderRoutes = () => {
-
   return (
     <Routes>
-      {nav.map((r, i) => {
-        if (r.isAuth) {
-          if (sessionStorage.getItem('token')) {
-            return <Route key={i} path={r.path} element={r.element} />;
-          } else {
-            return (
-              <Route key={i} path={r.path} element={<Navigate to='/signIn' />} />
-            );
+      {nav.map((route, index) => (
+        <Route
+          key={index}
+          path={route.path}
+          element={
+            <AuthMiddleware
+              element={route.element}
+              isAuth={route.isAuth}
+              requiredRole={route.requiredRole}
+            />
           }
-        } else if (!r.isAuth) {
-          return <Route key={i} path={r.path} element={r.element} />;
-        } else {
-          return false;
-        }
-      })}
+        />
+      ))}
     </Routes>
   );
-}
+};

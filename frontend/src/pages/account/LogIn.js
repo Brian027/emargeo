@@ -1,8 +1,8 @@
-import React, { useEffect, useReducer, useState } from 'react'
+import React, { useReducer, useState } from 'react'
 import './account.scss'
 import SignIn from '../../assets/images/signIn.png'
 import { Link, useNavigate } from 'react-router-dom'
-import { AuthData } from '../../auth/AuthWrapper';
+import { AuthData } from '../../config/AuthWrapper'
 
 function LogIn() {
 
@@ -10,39 +10,34 @@ function LogIn() {
   document.title = 'Emargeo | Se connecter'
 
   const { login } = AuthData();
+
   const navigate = useNavigate();
 
   // STATE
   const [formData, setFormData] = useReducer((formData, newItem) => { return ({ ...formData, ...newItem })}, {email: '', password: ''});
-  const [error, setError] = useState('')
-
-  // Si l'utilisateur est connecté, on le redirige vers la page account
-  // useEffect(() => {
-  //   if (user.data.id) {
-  //     navigate('/account');
-  //   }
-  // }, [user.data.id, navigate]);
+  const [error, setError] = useState('');
 
   // SUBMIT
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Send data
     try {
-      await login(formData.email, formData.password);
-      navigate('/account');
 
+      const credentials = {
+        email: formData.email,
+        password: formData.password
+      }
+
+      await login(credentials);
+
+      if(localStorage.getItem('token')) {
+        navigate('/account');
+      } else {
+        setError('Identifiants incorrects');
+      }
+      
     } catch (error) {
-      document.querySelector('.error').style.visibility = 'visible';
-      document.querySelector('.error').style.opacity = '1';
-      
-      setTimeout(() => {
-        document.querySelector('.error').style.visibility = 'hidden';
-        document.querySelector('.error').style.opacity = '0';
-        document.querySelector('.error').style.transition = 'opacity .5s ease-in-out';
-      }, 3000);
-      
-      setError(error);
+      console.log(error);
     }
 
     // Vider les champs

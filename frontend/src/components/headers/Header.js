@@ -13,7 +13,7 @@ function Header() {
                 </div>
                 <div className="container">
                     <div className="headerLeft">
-                        <h1>Emargeo: Connectez-vous à la simplicité.</h1>
+                        <h1>Emargeo: <br /> Connectez-vous à la simplicité.</h1>
                         <p>
                             Emargeo : Simplifiez la gestion des présences avec notre plateforme
                             d'émargement en ligne, signez électroniquement en un clic !

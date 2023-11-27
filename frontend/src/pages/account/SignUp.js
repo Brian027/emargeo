@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import './account.scss'
 import { Link, useNavigate } from 'react-router-dom'
 import bgSignUp from '../../assets/images/signUp.png'
-import { AuthData } from '../../auth/AuthWrapper'
+import { AuthData } from '../../config/AuthWrapper'
 import { useSelector } from 'react-redux'
 
 function SignIn() {

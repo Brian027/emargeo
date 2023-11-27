@@ -1,9 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './sidenav.scss';
 import manAvatar from '../../assets/images/manAvatar.png';
 import { Link } from 'react-router-dom';
+import { AuthData } from '../../config/AuthWrapper';
 
 function SideNav1() {
+
+    const [user, setUser] = useState([])
+
+    const { logout } = AuthData();
+
+    // Récupérer les données de l'utilisateur dans le sessionStorage
+
+    useEffect(() => {
+        const user = sessionStorage.getItem('user');
+        if (user) {
+            setUser(JSON.parse(user));
+        }
+    }, []);
+
+    // Déconnexion
+    const handleLogout = async (e) => {
+        e.preventDefault();
+
+        try {
+            const token = sessionStorage.getItem('token');
+            await logout(token);
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     // Dark mode
     const setDarkMode = () => {
@@ -32,9 +59,11 @@ function SideNav1() {
                         </div>
                         <div className="userName">
                             <h4>
-                                
+                                {user.nom} {user.prenom}
                             </h4>
-                            <p></p>
+                            <p>
+                                {user.email}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -46,16 +75,16 @@ function SideNav1() {
                                 <span>Tableau de bord</span>
                             </button>
                         </div>
-                        {/* {user.data.role === "Formateur" && (
+                        {user.role === "Formateur" && (
                             <div className="management">
                                 <button className=''>
                                     <i className='bx bx-group'></i>
                                     <Link to="/manageGroupe"><span>Gestion de groupes</span></Link>
                                 </button>
                             </div>
-                        )} */}
-                        {/* {
-                            user.data.role === "Formateur" ? (
+                        )}
+                        {
+                            user.role === "Formateur" ? (
                                 <div className="sessionEmargement">
                                     <button>
                                         <i className='bx bx-calendar'></i>
@@ -71,7 +100,7 @@ function SideNav1() {
                                     </button>
                                 </div>
                             )
-                        } */}
+                        }
                         <div className="account">
                             <button>
                                 <i className='bx bx-cog'></i>
@@ -82,7 +111,7 @@ function SideNav1() {
                 </div>
                 <div className="footerNav">
                     <div className="logout">
-                        <button> {/* Assurez-vous d'importer la fonction logout */}
+                        <button onClick={handleLogout}>
                             <i className='bx bx-log-out'></i>
                             <span>Se déconnecter</span>
                         </button>

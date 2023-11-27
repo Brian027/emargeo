@@ -1,9 +1,22 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './navbar.scss'
 import logo from '../../assets/images/logo-emargeo.png'
 import { Link } from 'react-router-dom'
 
-function DefaultNavbar() { 
+function DefaultNavbar() {
+
+    // Savoir si l'utilisateur est connecté
+    const [isLogged, setIsLogged] = useState(false)
+    
+    // Récupérer le token de l'utilisateur
+    const token = sessionStorage.getItem('token')
+    
+    // Vérifier si l'utilisateur est connecté
+    useEffect(() => {
+        if(token) {
+            setIsLogged(true)
+        }
+    }, [token])
 
     // Fonction pour afficher le menu mobile
     const showMenuMobile = () => {
@@ -26,14 +39,14 @@ function DefaultNavbar() {
                             <Link to='/' className='link'>Accueil</Link>
                         </li>
                         <li className="navTopListItem">
-                            <Link to='/about' className='link'>A propos</Link>
+                            <Link to='/' className='link'>A propos</Link>
                         </li>
                         <li className="navTopListItem">
-                            <Link to='/contact' className='link'>Contact</Link>
+                            <Link to='/' className='link'>Contact</Link>
                         </li>
                         <li className="navTopListItem">
-                            {/* {
-                                user.data.id ? (
+                            {
+                                isLogged ? (
                                     <Link to='/account' className='link'>
                                         <button>Mon compte</button>
                                     </Link>
@@ -42,21 +55,21 @@ function DefaultNavbar() {
                                         <button>S'inscrire</button>
                                     </Link>
                                 )
-                            } */}
+                            }
                         </li>
                     </ul>
                     <div className="account">
-                        {/* {
-                            user.data.id ? (
+                        {
+                            isLogged ? (
                                 <Link to='/account' className='link'>
                                     <button>Mon compte</button>
                                 </Link>
                             ) : (
-                                <Link to='/signUp' className='link'>
-                                    <button>S'inscrire</button>
+                                <Link to='/signIn' className='link'>
+                                    <button>Se connecter</button>
                                 </Link>
                             )
-                        } */}
+                        }
                     </div>
                 </div>
                 <div className="MenuMobileToggle" onClick={showMenuMobile}>

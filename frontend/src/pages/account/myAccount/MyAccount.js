@@ -1,20 +1,36 @@
-import React, { useReducer } from 'react'
+import React, { useEffect, useReducer, useState } from 'react'
 import Navbar2 from '../../../components/navbars/Navbar2'
 import SideNav1 from '../../../components/sidenavs/SideNav1'
 import AppBar from '../../../components/appbars/AppBar'
 import './myAccount.scss'
 
 function MyAccount() {
-
-  // Title of the page
+  
+  // Titre de la page
   document.title = 'Emargeo | Mon compte'
 
-  // Use State
+  // Gestions des données de l'utilisateur
+  const [user, setUser] = useState([])
+  
+  // Gestions des données du formulaire
   const [formData, setFormData] = useReducer((state, newState) => ({ ...state, ...newState }), { nom: '', prenom: '', email: '' })
 
-  const updateData = (e) => {
+  // Récupérer les données de l'utilisateur
+  useEffect(() => {
+    sessionStorage.getItem('user') && setUser(JSON.parse(sessionStorage.getItem('user')))
+  }, [])
 
+  // Update data
+  const updateData = (e) => {
     e.preventDefault();
+
+    try {
+
+      console.log(formData);
+      
+    } catch (error) {
+      
+    }
 
   }
 
@@ -41,18 +57,18 @@ function MyAccount() {
                     <div className="idendityUser">
                       <h4>Identité:</h4>
                       <label>
-                        <span>Nom actuel: <strong>{/*user.data.nom*/}</strong></span>
+                        <span>Nom actuel: <strong>{user.nom}</strong></span>
                         <input type="text" onChange={(e) => { setFormData({ nom: e.target.value }) }} />
                       </label>
                       <label>
-                        <span>Prénom actuel: <strong>{/*user.data.prenom*/}</strong></span>
+                        <span>Prénom actuel: <strong>{user.prenom}</strong></span>
                         <input type="text" onChange={(e) => { setFormData({ prenom: e.target.value }) }} />
                       </label>
                     </div>
                     <div className="infoContact">
                       <h4>Contact:</h4>
                       <label>
-                        <span>Email actuel: <strong>{/*user.data.email*/}</strong></span>
+                        <span>Email actuel: <strong>{user.email}</strong></span>
                         <input type="text" onChange={(e) => { setFormData({ email: e.target.value }) }} />
                       </label>
                       <label>
@@ -72,7 +88,7 @@ function MyAccount() {
                     <h4>Sécurité:</h4>
                     <label>
                       <span>Mot de passe actuel:</span>
-                      <input type="password" />
+                      <input type="text"/>
                     </label>
                     <label>
                       <span>Nouveau mot de passe:</span>

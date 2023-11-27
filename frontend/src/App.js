@@ -1,5 +1,5 @@
 import { BrowserRouter } from 'react-router-dom';
-import { AuthWrapper } from './auth/AuthWrapper';
+import { AuthWrapper } from './config/AuthWrapper';
 
 function App() {
   return (

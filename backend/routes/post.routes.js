@@ -28,20 +28,20 @@ router.get("/manageGroupe", auth, getGroupe)
 // Ajout de groupe
 router.post("/manageGroupe/add", auth, addGroupe)
 // Pour mettre à jour les données de groupe
-router.put("/manageGroupe/update", auth, updateGroup)
+router.put("/manageGroupe/update/:groupId", auth, updateGroup)
 // Pour supprimer un groupe
-router.delete("/manageGroupe/delete", auth, deleteGroup)
+router.delete("/manageGroupe/delete/:groupId", auth, deleteGroup)
 
 /***********************************************/
 /**************** MANAGE MEMBERS ****************/
 /***********************************************/
 
 // Pour récupérer les données de membres
-router.get("/manageGroupe/members", auth, getMembers)
+router.get("/manageGroupe/members/:groupId", auth, getMembers)
 // Ajout de membre
 router.post("/manageGroupe/members/add", auth, addMember)
 // Pour supprimer un membre
-router.delete("/manageGroupe/members/delete", auth, deleteMember)
+router.delete("/manageGroupe/members/delete/:groupId/:userId", auth, deleteMember)
 
 
 /*************************************************/

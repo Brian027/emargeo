@@ -43,7 +43,7 @@ module.exports.signIn = async (req, res) => {
                 return res.status(500).json({ message: "Une erreur s'est produite" });
             }
 
-            res.status(200).json({ message: `Bonjour ${user.prenom}`, token: token });
+            res.status(200).json({ message: `Bonjour ${user.prenom}`, user: user, token: token });
         });
     });
 
@@ -131,7 +131,7 @@ module.exports.logOut = (req, res) => {
 
 module.exports.getUser = (req, res) => {
 
-    const sql = 'SELECT * FROM em_user';
+    const sql = 'SELECT * FROM em_user WHERE role = "Apprenant"';
 
     init.query(sql, async (err, result) => {
         if (err) {
@@ -151,9 +151,8 @@ module.exports.getUser = (req, res) => {
 
 module.exports.getGroupe = (req, res) => {
 
-    const sql = 'SELECT g.id, g.nom_groupe FROM em_groupe g LEFT JOIN em_user u ON g.fk_user = u.id WHERE u.id = ?';
-
     try {
+        const sql = 'SELECT g.id, g.nom_groupe FROM em_groupe g LEFT JOIN em_user u ON g.fk_user = u.id WHERE u.id = ?';
 
         if (req.user.role === "Formateur") {
             init.query(sql, [req.user.id], async (err, result) => {
@@ -183,23 +182,35 @@ module.exports.getGroupe = (req, res) => {
 module.exports.addGroupe = (req, res) => {
 
     const nom_groupe = req.body.nom_groupe;
+    const id_user = req.user.id;
 
     if (nom_groupe === undefined) {
         return res.status(400).json({ message: "Aucun formateur trouvé" });
     }
 
-    const sql = 'INSERT INTO em_groupe (fk_user, nom_groupe) VALUES (?, ?)';
+    const sql = 'SELECT * FROM em_groupe WHERE nom_groupe = ? AND fk_user = ?';
+    const sql2 = 'INSERT INTO em_groupe (fk_user, nom_groupe) VALUES (?, ?)';
 
     try {
 
         if (req.user.role === "Formateur") {
-            init.query(sql, [req.user.id, nom_groupe], async (err, result) => {
+            init.query(sql, [nom_groupe, id_user], async (err, result) => {
                 if (err) {
                     console.error(err);
                     return res.status(500).json({ message: "Une erreur s'est produite" });
                 }
+                if (result.length > 0) {
+                    return res.status(400).json({ message: "Le groupe existe déjà" });
+                } else {
+                    init.query(sql2, [req.user.id, nom_groupe], async (err, result) => {
+                        if (err) {
+                            console.error(err);
+                            return res.status(500).json({ message: "Une erreur s'est produite" });
+                        }
 
-                res.status(200).json({ message: "Groupe ajouté" });
+                        res.status(200).json({ message: "Groupe ajouté" });
+                    });
+                }
             });
         } else {
             res.status(400).json({ message: "Vous n'êtes pas formateur" });
@@ -214,7 +225,7 @@ module.exports.addGroupe = (req, res) => {
 
 module.exports.updateGroup = (req, res) => {
 
-    const id_groupe = req.body.id_groupe;
+    const id_groupe = req.id_groupe;
     const nom_groupe = req.body.nom_groupe;
 
     if (id_groupe === undefined || nom_groupe === undefined) {
@@ -247,17 +258,26 @@ module.exports.updateGroup = (req, res) => {
 
 module.exports.deleteGroup = (req, res) => {
 
-    const id_groupe = req.body.id_groupe;
+    const id_groupe = req.id_groupe;
 
     if (id_groupe === undefined) {
         return res.status(400).json({ message: "Aucun groupe trouvé" });
     }
 
     const sql = 'DELETE FROM em_groupe WHERE id = ?';
+    // Supprimer les membres associer au groupe
+    const sql2 = 'DELETE FROM em_membres_groupe WHERE fk_groupe = ?';
 
     try {
 
         if (req.user.role === "Formateur") {
+            init.query(sql2, [id_groupe], async (err, result) => {
+                if (err) {
+                    console.error(err);
+                    return res.status(500).json({ message: "Une erreur s'est produite" });
+                }
+            });
+
             init.query(sql, [id_groupe], async (err, result) => {
                 if (err) {
                     console.error(err);
@@ -279,14 +299,14 @@ module.exports.deleteGroup = (req, res) => {
 
 module.exports.getMembers = (req, res) => {
 
-    const id_formateur = req.user.id;
-    const id_groupe = req.body.id_groupe;
-    const sql = 'SELECT mg.id as id_membre, u.id as id_user, CONCAT(u.prenom," ",u.nom) as nom_membre, u.email FROM em_membres_groupe mg LEFT JOIN em_user u ON mg.fk_user = u.id LEFT JOIN em_groupe g ON mg.fk_groupe = g.id WHERE g.fk_user = ? AND g.id = ?';
+    const id_groupe = req.id_groupe;
+
+    const sql = 'SELECT mg.id as id_membre, u.id as id_user, CONCAT(u.prenom," ",u.nom) as nom_membre, u.email FROM em_membres_groupe mg LEFT JOIN em_user u ON mg.fk_user = u.id LEFT JOIN em_groupe g ON mg.fk_groupe = g.id WHERE g.id = ?';
 
     try {
 
         if (req.user.role === "Formateur") {
-            init.query(sql, [id_formateur, id_groupe], async (err, result) => {
+            init.query(sql, [id_groupe], async (err, result) => {
                 if (err) {
                     console.error(err);
                     return res.status(500).json({ message: "Une erreur s'est produite" });
@@ -317,7 +337,9 @@ module.exports.addMember = (req, res) => {
         return res.status(400).json({ message: "Aucun groupe trouvé" });
     }
 
-    const sql = 'INSERT INTO em_membres_groupe (fk_user, fk_groupe) VALUES (?, ?)';
+    // Vérifier si le membre existe déjà dans le groupe
+    const sql = 'SELECT * FROM em_membres_groupe WHERE fk_user = ? AND fk_groupe = ?';
+    const sql2 = 'INSERT INTO em_membres_groupe (fk_user, fk_groupe) VALUES (?, ?)';
 
     try {
 
@@ -327,8 +349,18 @@ module.exports.addMember = (req, res) => {
                     console.error(err);
                     return res.status(500).json({ message: "Une erreur s'est produite" });
                 }
+                if (result.length > 0) {
+                    return res.status(400).json({ message: "Le membre existe déjà dans ce groupe" });
+                } else {
+                    init.query(sql2, [id_user, id_groupe], async (err, result) => {
+                        if (err) {
+                            console.error(err);
+                            return res.status(500).json({ message: "Une erreur s'est produite" });
+                        }
 
-                res.status(200).json({ message: "Membre ajouté" });
+                        res.status(200).json({ message: "Membre ajouté" });
+                    });
+                }
             });
         } else {
             res.status(400).json({ message: "Vous n'êtes pas formateur" });
@@ -343,19 +375,19 @@ module.exports.addMember = (req, res) => {
 
 module.exports.deleteMember = (req, res) => {
 
-    const id_groupe = req.body.id_groupe;
-    const id_user = req.body.id_user;
+    const id_groupe = req.id_groupe;
+    const id_membre = req.id_user;
 
-    if (id_groupe === undefined || id_user === undefined) {
+    if (id_groupe === undefined || id_membre === undefined) {
         return res.status(400).json({ message: "Aucun groupe trouvé" });
     }
 
-    const sql = 'DELETE FROM em_membres_groupe WHERE fk_user = ? AND fk_groupe = ?';
+    const sql = 'DELETE FROM em_membres_groupe WHERE id = ? AND fk_groupe = ?';
 
     try {
 
         if (req.user.role === "Formateur") {
-            init.query(sql, [id_user, id_groupe], async (err, result) => {
+            init.query(sql, [id_membre, id_groupe], async (err, result) => {
                 if (err) {
                     console.error(err);
                     return res.status(500).json({ message: "Une erreur s'est produite" });

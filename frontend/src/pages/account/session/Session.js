@@ -3,14 +3,17 @@ import './session.scss';
 import SideNav1 from '../../../components/sidenavs/SideNav1';
 import Navbar2 from '../../../components/navbars/Navbar2';
 import AppBar from '../../../components/appbars/AppBar';
-import axios from 'axios';
+import api from '../../../api/api';
 
 function Session() {
 
-  const [sessions, setSessions] = useState([]);
+  const [state, setState] = useState({
+    sessions: [],
+    error: '',
+    success: '',
+  });
+
   const [formData, setFormData] = useState({
-    // id_formateur: user.data.id || '',
-    id_groupe: '',
     debutDate: '',
     finDate: '',
     debutMatin: '',
@@ -19,52 +22,63 @@ function Session() {
     finAprem: ''
   });
 
-  const [groupe, setGroupe] = useState("");
+  const handleAddSession = async (event) => {
+    try {
 
-  // useEffect(() => {
-  //   if (user.data.id) {
-  //     const id_formateur = user.data.id;
+      const token = sessionStorage.getItem('token');
+      const sessionData = {
+        debutDate: formData.debutDate,
+        finDate: formData.finDate,
+        debutMatin: formData.debutMatin,
+        finMatin: formData.finMatin,
+        debutAprem: formData.debutAprem,
+        finAprem: formData.finAprem
+      };
 
-  //     axios.post('http://localhost:5000/manageGroupe', { id_formateur })
-  //       .then((response) => {
-  //         setGroupe(response.data.groupes[0]);
-  //       })
-  //       .catch((error) => {
-  //         console.log(error.response.data.message);
-  //       });
-  //   }
-  // }, [user.data.id]);
+      const url = api.addSession(sessionData, token);
+      const response = await url;
+      const responseData = response.data;
 
-  // useEffect(() => {
-  //   if (user.data.id) {
-  //     const id_formateur = user.data.id;
-  //     axios.post('http://localhost:5000/session', { id_formateur })
-  //       .then((response) => {
-  //         setSessions(response.data.sessions);
-  //       })
-  //       .catch((error) => {
-  //         console.log(error.response.data.message);
-  //       });
-  //   }
-  // }, [user.data.id]);
+      if (response.status === 200) {
+        setState({
+          ...state,
+          sessions: [...state.sessions, responseData.session],
+        });
+      }
 
-  // const handleFormChange = (event) => {
-  //   setFormData({
-  //     ...formData,
-  //     [event.target.name]: event.target.value,
-  //   });
-  // };
+    } catch (error) {
 
-  // const submitSession = (event) => {
-  //   event.preventDefault();
-  //   axios.post('http://localhost:5000/session/add', formData)
-  //     .then((response) => {
-  //       console.log(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
+    }
+  }
+
+  // Récupérer les sessions
+  const getSessions = async () => {
+    try {
+      const token = sessionStorage.getItem('token');
+
+      const url = api.getSessions(token);
+      const response = await url;
+      const sessionsData = response.data;
+
+      if (sessionsData) {
+        setState({ ...state, sessions: sessionsData.sessions });
+      }
+
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  useEffect(() => {
+    getSessions();
+  }, []);
+
+  const handleFormChange = (event) => {
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value,
+    });
+  };
 
   const show = (anything) => {
     document.querySelector('.sessionList').value = anything;
@@ -72,6 +86,14 @@ function Session() {
 
   const toggleActive = () => {
     document.querySelector('.wrapperSessionList').classList.toggle('active');
+  };
+  // Fonction pour formater l'heure actuelle au format "HH:mm:ss"
+  const formatCurrentTime = () => {
+    const currentDate = new Date();
+    const hours = currentDate.getHours().toString().padStart(2, '0');
+    const minutes = currentDate.getMinutes().toString().padStart(2, '0');
+    const seconds = currentDate.getSeconds().toString().padStart(2, '0');
+    return `${hours}:${minutes}:${seconds}`;
   };
 
   return (
@@ -93,29 +115,19 @@ function Session() {
               <div className="leftContentBox">
                 <form>
                   <div className="formField">
-                    <input
-                      type="hidden"
-                      name="id_formateur"
-                      value={formData.id_formateur}
-                      // onChange={handleFormChange}
-                    />
-                  </div>
-                  <div className="formField">
-                    <input
-                      type="hidden"
-                      name="id_groupe"
-                      value={formData.id_groupe || (groupe && groupe.id) || ""}
-                      // onChange={handleFormChange}
-                    />
-                  </div>
-                  <div className="formField">
                     <div className="startDate">
                       <label htmlFor="debutDate">Date de début</label>
                       <input
                         type="date"
                         name="debutDate"
-                        value={formData.debutDate}
-                        // onChange={handleFormChange}
+                        defaultValue={
+                          new Date().getFullYear()
+                          + '-' +
+                          (new Date().getMonth() + 1)
+                          + '-' +
+                          new Date().getDate()
+                        }
+                        onChange={handleFormChange}
                       />
                     </div>
                     <hr />
@@ -124,8 +136,14 @@ function Session() {
                       <input
                         type="date"
                         name="finDate"
-                        value={formData.finDate}
-                        // onChange={handleFormChange}
+                        defaultValue={
+                          new Date().getFullYear()
+                          + '-' +
+                          (new Date().getMonth() + 1)
+                          + '-' +
+                          new Date().getDate()
+                        }
+                        onChange={handleFormChange}
                       />
                     </div>
                   </div>
@@ -135,8 +153,8 @@ function Session() {
                       <input
                         type="time"
                         name="debutMatin"
-                        value={formData.debutMatin}
-                        // onChange={handleFormChange}
+                        defaultValue="08:00:00"
+                        onChange={handleFormChange}
                       />
                     </div>
                     <hr />
@@ -145,8 +163,8 @@ function Session() {
                       <input
                         type="time"
                         name="finMatin"
-                        value={formData.finMatin}
-                        // onChange={handleFormChange}
+                        defaultValue="12:00:00"
+                        onChange={handleFormChange}
                       />
                     </div>
                   </div>
@@ -156,8 +174,8 @@ function Session() {
                       <input
                         type="time"
                         name="debutAprem"
-                        value={formData.debutAprem}
-                        // onChange={handleFormChange}
+                        defaultValue="13:00:00"
+                        onChange={handleFormChange}
                       />
                     </div>
                     <hr />
@@ -166,8 +184,8 @@ function Session() {
                       <input
                         type="time"
                         name="finAprem"
-                        value={formData.finAprem}
-                        // onChange={handleFormChange}
+                        defaultValue="16:30:00"
+                        onChange={handleFormChange}
                       />
                     </div>
                   </div>
@@ -184,14 +202,14 @@ function Session() {
                     readOnly
                   />
                   <div className="option">
-                    {/* {sessions.map((session) => (
+                    {state.sessions.map((session) => (
                       <div
                         key={session.id}
                         onClick={() => show(session.nom_groupe)}
                       >
                         {session.nom_groupe}
                       </div>
-                    ))} */}
+                    ))}
                   </div>
                 </div>
               </div>
