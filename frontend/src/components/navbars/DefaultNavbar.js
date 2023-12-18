@@ -7,6 +7,7 @@ function DefaultNavbar() {
 
     // Savoir si l'utilisateur est connecté
     const [isLogged, setIsLogged] = useState(false)
+
     
     // Récupérer le token de l'utilisateur
     const token = sessionStorage.getItem('token')
@@ -17,13 +18,12 @@ function DefaultNavbar() {
             setIsLogged(true)
         }
     }, [token])
-
-    // Fonction pour afficher le menu mobile
+    
+    // Toggle menu mobile
+    
+    const [openMenuMobile, setOpenMenuMobile] = useState(false)
     const showMenuMobile = () => {
-        const menuMobile = document.querySelector('.navTopList')
-        const btnMenuMobile = document.querySelector('.MenuMobileToggle')
-        btnMenuMobile.classList.toggle('active')
-        menuMobile.classList.toggle('active')
+        setOpenMenuMobile(!openMenuMobile)
     }
     
   return (
@@ -34,7 +34,7 @@ function DefaultNavbar() {
                     <img src={logo} alt="logo" />
                 </div>
                 <div className="navTopRight">
-                    <ul className="navTopList">
+                    <ul className={`navTopList ${openMenuMobile ? 'active' : ''}`}>
                         <li className="navTopListItem">
                             <Link to='/' className='link'>Accueil</Link>
                         </li>
@@ -72,7 +72,7 @@ function DefaultNavbar() {
                         }
                     </div>
                 </div>
-                <div className="MenuMobileToggle" onClick={showMenuMobile}>
+                <div className={`MenuMobileToggle ${openMenuMobile ? 'active' : ''}`} onClick={showMenuMobile}>
                     <span className='line l1'></span>
                     <span className='line l2'></span>
                     <span className='line l3'></span>

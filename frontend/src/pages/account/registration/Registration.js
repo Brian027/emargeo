@@ -4,7 +4,7 @@ import SideNav1 from '../../../components/sidenavs/SideNav1'
 import Navbar2 from '../../../components/navbars/Navbar2'
 import AppBar from '../../../components/appbars/AppBar'
 import ModuleCard from '../../../components/cards/ModuleCard'
-import axios from 'axios'
+import api from '../../../api/api'
 
 function Registration() {
   // Title of the page
@@ -13,29 +13,24 @@ function Registration() {
   // State
   const [emargements, setEmargements] = useState([])
 
-  // Fetch data
-  // const fetchData = async () => {
-  //   if(user.data.id) {
+  // Get emargements
+  const fetchData = async () => {
+    try {
+      const token = sessionStorage.getItem('token')
+      const url = api.getEmargements(token)
+      const response = await url
 
-  //     const id_user = user.data.id
+      if (response.status === 200) {
+        setEmargements(response.data.emargements)
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-  //     axios.post('http://localhost:5000/emargementStudent', { id_user })
-  //       .then((response) => {
-  //         if(response.data.emargements[0].fk_statut === '2') {
-  //           setEmargements(response.data.emargements)
-  //         } else {
-  //           setEmargements([])
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         console.log(error.response.data.message)
-  //       })
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   fetchData()
-  // }, [user.data.id])
+  useEffect(() => {
+    fetchData()
+  }, [])
 
   return (
     <>
@@ -60,7 +55,7 @@ function Registration() {
               </div>
             </div>
             {
-              // <ModuleCard emargements={emargements} />
+              <ModuleCard emargements={emargements} />
             }
           </div>
         </div>

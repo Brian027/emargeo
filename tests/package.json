@@ -1,0 +1,19 @@
+{
+  "name": "tests_unitaire",
+  "version": "1.0.0",
+  "description": "",
+  "main": "userController.test.js",
+  "scripts": {
+    "test": "mocha userController.test.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.3.10",
+    "mocha": "^10.2.0",
+    "supertest": "^6.3.3"
+  },
+  "dependencies": {
+    "chai-http": "^4.4.0"
+  }
+}

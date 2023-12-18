@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const cors = require('cors');
-const { signIn, signUp, logOut, getGroupe, getMembers, createSession, getSessions, sendEmargement, getUser, getEmargement, signEmargement, addGroupe, addMember, deleteGroup, updateGroup, deleteMember, updateSession, deleteSession, } = require('../controllers/post.controller');
+const { signIn, signUp, logOut, getGroupe, getMembers, createSession, getSessions, sendEmargement, getUser, getEmargement, signEmargement, addGroupe, addMember, deleteGroup, updateGroup, deleteMember, updateSession, deleteSession, getArchiveEmargement, } = require('../controllers/post.controller');
 const { auth } = require('../middleware/auth');
 
 router.use(express.json());
@@ -64,6 +64,9 @@ router.delete("/session/delete", auth, deleteSession)
 
 // Pour récupérer les données d'emargement
 router.get("/emargement", auth, getEmargement)
+
+// Pour récupérer les données d'emargement archivées
+router.get("/emargement/archive", auth, getArchiveEmargement)
 
 // Envoi d'emargement à l'utilisateur
 router.post("/emargement/send", auth, sendEmargement)

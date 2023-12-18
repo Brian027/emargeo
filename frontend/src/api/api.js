@@ -31,9 +31,10 @@ const api = {
   deleteSession: (sessionId) => axiosClient.delete(`/session/delete/${sessionId}`),
 
   // Gestion des émargements
-  getEmargements: (token) => axiosClient.get('/emargement', { headers: { 'Authorization': `Bearer ${token}` } }),
-  sendEmargement: (token, emargementData) => axiosClient.post('/emargement/send', emargementData, { headers: { 'Authorization': `Bearer ${token}` }}),
-  signEmargement: (emargementId, signatureData) => axiosClient.post(`/emargement/sign/${emargementId}`, signatureData),
+  getEmargements: (token) => axiosClient.get(`/emargement`, { headers: { 'Authorization': `Bearer ${token}` } }),
+  getArchiveEmargements: (token) => axiosClient.get(`/emargement/archive`, { headers: { 'Authorization': `Bearer ${token}` } }),
+  sendEmargement: (token, emargementData) => axiosClient.post('/emargement/send', emargementData, { headers: { 'Authorization': `Bearer ${token}` } }),
+  signEmargement: (signatureData, token) => axiosClient.post('/emargement/sign', signatureData, { headers: { 'Authorization': `Bearer ${token}` } }),
 };
 
 export default api;

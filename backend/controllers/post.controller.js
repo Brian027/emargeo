@@ -616,7 +616,7 @@ module.exports.sendEmargement = (req, res) => {
         }
 
     } catch (error) {
-
+        res.status(401).send({ error })
     }
 };
 
@@ -627,18 +627,68 @@ module.exports.getEmargement = (req, res) => {
 
     const sql = 'SELECT e.id, e.debut_date, e.fin_date, e.fk_user, e.fk_statut, s.statut_name FROM em_emargement e LEFT JOIN em_statut s ON e.fk_statut = s.id WHERE e.fk_user = ?';
 
-    init.query(sql, [id_user], async (err, result) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ message: "Une erreur s'est produite" });
+    const sql2 = 'SELECT e.id, e.debut_date, e.fin_date, e.fk_user, e.fk_statut, s.statut_name FROM em_emargement e LEFT JOIN em_statut s ON e.fk_statut = s.id';
+
+    try {
+
+        if (req.user.role === "Apprenant") {
+            init.query(sql, [id_user], async (err, result) => {
+                if (err) {
+                    console.error(err);
+                    return res.status(500).json({ message: "Une erreur s'est produite" });
+                }
+
+                if (result.length === 0) {
+                    return res.status(400).json({ message: "Aucun emargement trouvé" });
+                } else {
+                    res.status(200).json({ message: "Emargement trouvé", emargements: result });
+                }
+            });
+        } else if (req.user.role === "Formateur") {
+            init.query(sql2, async (err, result) => {
+                if (err) {
+                    console.error(err);
+                    return res.status(500).json({ message: "Une erreur s'est produite" });
+                }
+
+                if (result.length === 0) {
+                    return res.status(400).json({ message: "Aucun emargement trouvé" });
+                } else {
+                    res.status(200).json({ message: "Emargement trouvé", emargements: result });
+                }
+            });
+        } else {
+            res.status(400).json({ message: "Vous n'êtes pas formateur ou apprenant" });
         }
 
-        if (result.length === 0) {
-            return res.status(400).json({ message: "Aucun emargement trouvé" });
-        } else {
-            res.status(200).json({ message: "Emargement trouvé", emargements: result });
-        }
-    });
+    } catch (error) {
+        res.status(401).send({ error })
+    }
+
+}
+
+module.exports.getArchiveEmargement = (req, res) => {
+
+    const sql = 'SELECT a.id, a.debut_date, a.fin_date, a.fk_user, a.fk_statut, s.statut_name FROM em_archive_emargement a LEFT JOIN em_statut s ON a.fk_statut = s.id';
+
+    try {
+
+        init.query(sql, async (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ message: "Une erreur s'est produite" });
+            }
+
+            if (result.length === 0) {
+                return res.status(400).json({ message: "Aucun emargement trouvé" });
+            } else {
+                res.status(200).json({ message: "Emargement trouvé", emargements: result });
+            }
+        })
+
+    } catch (error) {
+        res.status(401).send({ error })
+    }
 }
 
 // SIGN EMARGEMENT FUNCTION
@@ -687,8 +737,9 @@ module.exports.signEmargement = (req, res) => {
             }
 
             const statut = result[0];
+            const fk_statut = 1;
 
-            init.query(sql2, [emargement.fk_user, emargement.fk_statut, emargement.debut_date, emargement.fin_date], async (err, result) => {
+            init.query(sql2, [emargement.fk_user, fk_statut, emargement.debut_date, emargement.fin_date], async (err, result) => {
                 if (err) {
                     console.error(err);
                     return res.status(500).json({ message: "Une erreur s'est produite" });

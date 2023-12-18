@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './table.scss';
 import manAvatar from '../../assets/images/manAvatar.png';
-import axios from 'axios';
 import api from '../../api/api';
 
 function Table({ membres, handleDeleteMember }) {
@@ -10,8 +9,9 @@ function Table({ membres, handleDeleteMember }) {
   const [state, setState] = useState({
     sessions: [],
     emargements: [],
+    archiveEmargements: [],
     members: [],
-    isLoading: true,
+    isLoading: false,
   });
 
   useEffect(() => {
@@ -28,38 +28,78 @@ function Table({ membres, handleDeleteMember }) {
       return;
     }
 
-    
-    selectedMembers.forEach(async (member) => {
-      
+    setState((prevState) => ({ ...prevState, isLoading: true })); // Activer le loader
+
+    for (const member of selectedMembers) {
       const token = sessionStorage.getItem('token');
       const emargementData = {
         id_user: member.id_user,
-      }
+      };
 
-      await api.sendEmargement(token, emargementData)
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    });
+      try {
+        await api.sendEmargement(token, emargementData);
+        console.log(`Emargement envoyé pour ${member.nom_membre}`);
+      } catch (error) {
+        console.log(`Erreur lors de l'envoi de l'émargement pour ${member.nom_membre}:`, error);
+      }
+    }
+
+    setState((prevState) => ({ ...prevState, isLoading: false })); // Désactiver le loader
   };
 
   // Logique pour afficher le statut d'un membre
   const renderStatut = (id_user) => {
-    if (!state.emargements.length) {
-      return <span>Pas envoyé</span>;
-    }
 
     const memberEmargement = state.emargements.find((e) => e.fk_user === id_user);
+    const memberArchiveEmargement = state.archiveEmargements.find((e) => e.fk_user === id_user);
 
     if (memberEmargement) {
-      return <span>{memberEmargement.statut_name}</span>;
+      // Afficher le nom du statut
+      if (memberEmargement.fk_statut === "2") {
+        return <span>Envoyé</span>;
+      }
+    } else if (memberArchiveEmargement) {
+      if (memberArchiveEmargement.fk_statut === 1) {
+        return <span>Signé</span>;
+      }
     } else {
-      return <span>Pas envoyé</span>;
+      return <span>Non envoyé</span>;
     }
   };
+
+  useEffect(() => {
+    // Récupérer les données d'emargement
+    const token = sessionStorage.getItem('token');
+
+    setState((prevState) => ({ ...prevState, isLoading: true }));
+
+    api.getEmargements(token)
+      .then((response) => {
+        setState((prevState) => ({ ...prevState, emargements: response.data.emargements }));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    setState((prevState) => ({ ...prevState, isLoading: false }));
+  }, []);
+
+  useEffect(() => {
+    // Récupérer les données d'emargement archivées
+    const token = sessionStorage.getItem('token');
+
+    setState((prevState) => ({ ...prevState, isLoading: true }));
+
+    api.getArchiveEmargements(token)
+      .then((response) => {
+        setState((prevState) => ({ ...prevState, archiveEmargements: response.data.emargements }));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    setState((prevState) => ({ ...prevState, isLoading: false }));
+  }, []);
 
   const handleChange = (e) => {
     const { name, checked } = e.target;

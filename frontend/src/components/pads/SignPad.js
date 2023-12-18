@@ -3,6 +3,7 @@ import './pad.scss';
 import SignatureCanvas from 'react-signature-canvas';
 import axios from 'axios';
 import LoaderOne from '../loaders/LoaderOne';
+import api from '../../api/api';
 
 function SignPad() {
     const [signatureData, setSignatureData] = useState('');
@@ -26,27 +27,19 @@ function SignPad() {
         setError(errorMessage);
     };
 
-    const save = () => {
-        const canvas = document.querySelector('.sigCanvas');
-        const dataURL = canvas.toDataURL();
-        setSignatureData(dataURL);
+    const save = async () => {
+        try {
+            const token = sessionStorage.getItem('token');
+            const canvas = document.querySelector('.sigCanvas');
+            const data = canvas.toDataURL('image/png');
+            const signatureData = { signatureData: data };
 
-        // const id_user = user.data.id;
-
-        // if (id_user) {
-        //     axios.post('http://localhost:5000/emargement/sign', { signatureData: dataURL, id_user })
-        //         .then((response) => {
-        //             console.log(response.data.message);
-        //             setResponse(response.data.message);
-        //             setLoading(false);
-        //         })
-        //         .catch((error) => {
-        //             console.log('Erreur :', error);
-        //             setLoadingAndShowError('Erreur lors de l\'envoi de la signature');
-        //         });
-
-        //     setLoadingAndClearError();
-        // }
+            const url = api.signEmargement(signatureData, token)
+            const response = await url.data;
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
